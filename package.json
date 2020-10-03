@@ -3,6 +3,7 @@
   "version": "2.0.0",
   "private": true,
   "dependencies": {
+    "@redux-devtools/extension": "^4",
     "classnames": "^2.5",
     "msw": "^2.15",
     "react": "^19",
