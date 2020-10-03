@@ -1,64 +1,12 @@
-const initialState = {
-  todos: [
-    { id: 0, text: 'Learn React', completed: true },
-    { id: 1, text: 'Learn Redux', completed: false, color: 'purple' },
-    { id: 2, text: 'Build something fun!', completed: false, color: 'blue' },
-  ],
-  filters: {
-    status: 'All',
-    colors: [],
-  },
-}
+import todosReducer from './features/todos/todosSlice'
+import filtersReducer from './features/filters/filtersSlice'
 
-function nextTodoId(todos) {
-  const maxId = todos.reduce((maxId, todo) => Math.max(todo.id, maxId), -1)
-  return maxId + 1
-}
-
-export default function appReducer(state = initialState, action) {
-  switch (action.type) {
-    case 'todos/todoAdded': {
-      return {
-        ...state,
-        todos: [
-          ...state.todos,
-          {
-            id: nextTodoId(state.todos),
-            text: action.payload,
-            completed: false,
-          },
-        ],
-      }
-    }
-    case 'todos/todoToggled': {
-      return {
-        ...state,
-        todos: state.todos.map((todo) => {
-          if (todo.id !== action.payload) {
-            return todo
-          }
-
-          return {
-            ...todo,
-            completed: !todo.completed,
-          }
-        }),
-      }
-    }
-    case 'filters/statusFilterChanged': {
-      return {
-        // Copy the whole state
-        ...state,
-        // Overwrite the filters value
-        filters: {
-          // copy the other filter fields
-          ...state.filters,
-          // And replace the status field with the new value
-          status: action.payload,
-        },
-      }
-    }
-    default:
-      return state
+export default function rootReducer(state, action) {
+  // always return a new object for the root state
+  return {
+    // the value of `state.todos` is whatever the todos reducer returns
+    todos: todosReducer(state.todos, action),
+    // For both reducers, we only pass in their slice of the state
+    filters: filtersReducer(state.filters, action),
   }
 }
