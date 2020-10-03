@@ -6,7 +6,8 @@
     "classnames": "^2.5",
     "msw": "^2.15",
     "react": "^19",
-    "react-dom": "^19"
+    "react-dom": "^19",
+    "redux": "^5"
   },
   "scripts": {
     "dev": "vite",
