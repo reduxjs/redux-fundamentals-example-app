@@ -8,6 +8,7 @@
     "msw": "^2.15",
     "react": "^19",
     "react-dom": "^19",
+    "react-redux": "^9.3",
     "redux": "^5"
   },
   "scripts": {
