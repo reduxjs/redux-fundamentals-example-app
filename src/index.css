@@ -472,22 +472,23 @@ ul.todo-list {
   list-style: none;
 }
 
-.filters li a {
+.filters.statusFilters li button {
   color: inherit;
   margin: 3px;
   padding: 3px 7px;
   text-decoration: none;
-  border: 1px solid transparent;
+  border: 2px solid transparent;
   border-radius: 3px;
   cursor: pointer;
+  background: unset !important;
 }
 
-.filters li a:hover {
+.filters.statusFilters li button:hover {
   border-color: rgba(175, 47, 47, 0.1);
 }
 
-.filters li a.selected {
-  border-color: rgba(175, 47, 47, 0.2);
+.filters.statusFilters li button .selected {
+  border-color: rgba(175, 47, 47, 0.5);
 }
 
 .filters.colorFilters .color-block {
