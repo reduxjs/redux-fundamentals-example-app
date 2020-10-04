@@ -1,5 +1,5 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 
 import { availableColors, capitalize } from '../filters/colors'
 
@@ -13,9 +13,13 @@ const TodoListItem = ({ id }) => {
   const todo = useSelector((state) => selectTodoById(state, id))
   const { text, completed, color } = todo
 
-  const handleCompletedChanged = () => {}
   const handleColorChanged = () => {}
   const onDelete = () => {}
+  const dispatch = useDispatch()
+
+  const handleCompletedChanged = () => {
+    dispatch({ type: 'todos/todoToggled', payload: todo.id })
+  }
 
   const colorOptions = availableColors.map((c) => (
     <option key={c} value={c}>
