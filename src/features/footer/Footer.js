@@ -75,7 +75,7 @@ const ColorFilters = ({ value: colors, onChange }) => {
 const Footer = () => {
   const colors = []
   const status = StatusFilters.All
-  const uncompletedTodos = 1
+  const todosRemaining = 1
 
   const onColorChange = (color, changeType) =>
     console.log('Color change: ', { color, changeType })
@@ -89,7 +89,7 @@ const Footer = () => {
         <button className="button">Clear Completed</button>
       </div>
 
-      <RemainingTodos count={uncompletedTodos} />
+      <RemainingTodos count={todosRemaining} />
       <StatusFilter value={status} onChange={onStatusChange} />
       <ColorFilters value={colors} onChange={onColorChange} />
     </footer>
