@@ -1,17 +1,21 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 
 import { availableColors, capitalize } from '../filters/colors'
 
-const TodoListItem = ({ todo, onColorChange, onCompletedChange, onDelete }) => {
+const selectTodoById = (state, todoId) => {
+  return state.todos.find((todo) => todo.id === todoId)
+}
+
+// Destructure `props.id`, since we just need the ID value
+const TodoListItem = ({ id }) => {
+  // Call our `selectTodoById` with the state _and_ the ID value
+  const todo = useSelector((state) => selectTodoById(state, id))
   const { text, completed, color } = todo
 
-  const handleCompletedChanged = (e) => {
-    onCompletedChange(e.target.checked)
-  }
-
-  const handleColorChanged = (e) => {
-    onColorChange(e.target.value)
-  }
+  const handleCompletedChanged = () => {}
+  const handleColorChanged = () => {}
+  const onDelete = () => {}
 
   const colorOptions = availableColors.map((c) => (
     <option key={c} value={c}>
