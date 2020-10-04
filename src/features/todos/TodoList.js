@@ -1,28 +1,14 @@
 import React from 'react'
-
 import TodoListItem from './TodoListItem'
 
-const TodoList = ({ todos }) => {
-  const renderedItems = todos.map((todo) => {
-    const onTodoCompleted = () =>
-      console.log('Todo completed changed: ', todo.id)
-    const onTodoColorChanged = (color) =>
-      console.log('Todo color changed: ', todo.id, color)
+const TodoList = () => {
+  const todos = []
 
-    const onTodoDeleted = () => console.log('Todo deleted: ', todo.id)
-
-    return (
-      <TodoListItem
-        key={todo.id}
-        todo={todo}
-        onCompletedChange={onTodoCompleted}
-        onColorChange={onTodoColorChanged}
-        onDelete={onTodoDeleted}
-      />
-    )
+  const renderedListItems = todos.map((todo) => {
+    return <TodoListItem key={todo.id} todo={todo} />
   })
 
-  return <ul className="todo-list">{renderedItems}</ul>
+  return <ul className="todo-list">{renderedListItems}</ul>
 }
 
 export default TodoList

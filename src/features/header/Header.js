@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 const Header = () => {
   const [text, setText] = useState('')
 
-  const handleChange = (e) => setText(e.target.value)
+  const handleChange = (e) => setText(e.target.value.trim())
 
   return (
     <header className="header">

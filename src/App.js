@@ -5,12 +5,6 @@ import TodoList from './features/todos/TodoList'
 import Footer from './features/footer/Footer'
 
 function App() {
-  const todos = [
-    { id: 0, text: 'Learn React', completed: true },
-    { id: 1, text: 'Learn Redux', completed: false, color: 'purple' },
-    { id: 2, text: 'Build something fun!', completed: false, color: 'blue' },
-  ]
-
   return (
     <div className="App">
       <nav>
@@ -23,7 +17,7 @@ function App() {
           <h2>Todos</h2>
           <div className="todoapp">
             <Header />
-            <TodoList todos={todos} />
+            <TodoList />
             <Footer />
           </div>
         </section>
