@@ -51,7 +51,7 @@ export default function todosReducer(state = initialState, action) {
         return { ...todo, completed: true }
       })
     }
-    case 'todos/clearedCompleted': {
+    case 'todos/completedCleared': {
       return state.filter((todo) => !todo.completed)
     }
     default:
