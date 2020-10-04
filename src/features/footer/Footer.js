@@ -3,10 +3,21 @@ import React from 'react'
 import { availableColors, capitalize } from '../filters/colors'
 import { StatusFilters } from '../filters/filtersSlice'
 
-const StatusFilter = ({ status, onStatusChange }) => {
+const RemainingTodos = ({ count }) => {
+  const suffix = count === 1 ? '' : 's'
+
+  return (
+    <div className="todo-count">
+      <h5>Remaining Todos</h5>
+      <strong>{count}</strong> item{suffix} left
+    </div>
+  )
+}
+
+const StatusFilter = ({ value: status, onChange }) => {
   const renderedFilters = Object.keys(StatusFilters).map((key) => {
     const value = StatusFilters[key]
-    const handleClick = () => onStatusChange(value)
+    const handleClick = () => onChange(value)
     const className = value === status ? 'selected' : ''
 
     return (
@@ -26,12 +37,12 @@ const StatusFilter = ({ status, onStatusChange }) => {
   )
 }
 
-const ColorFilters = ({ colors, onColorChange }) => {
+const ColorFilters = ({ value: colors, onChange }) => {
   const renderedColors = availableColors.map((color) => {
     const checked = colors.includes(color)
     const handleChange = () => {
       const changeType = checked ? 'removed' : 'added'
-      onColorChange(color, changeType)
+      onChange(color, changeType)
     }
 
     return (
@@ -62,12 +73,12 @@ const ColorFilters = ({ colors, onColorChange }) => {
 }
 
 const Footer = () => {
-  const colors = ['blue']
+  const colors = []
+  const status = StatusFilters.All
+  const uncompletedTodos = 1
+
   const onColorChange = (color, changeType) =>
     console.log('Color change: ', { color, changeType })
-
-  const status = StatusFilters.Active
-
   const onStatusChange = (status) => console.log('Status change: ', status)
 
   return (
@@ -75,17 +86,12 @@ const Footer = () => {
       <div className="actions">
         <h5>Actions</h5>
         <button className="button">Mark All Completed</button>
-
         <button className="button">Clear Completed</button>
       </div>
-      <div className="todo-count">
-        <h5>Remaining Todos</h5>
-        <strong>1</strong> item left
-      </div>
 
-      <StatusFilter status={status} onStatusChange={onStatusChange} />
-
-      <ColorFilters colors={colors} onColorChange={onColorChange} />
+      <RemainingTodos count={uncompletedTodos} />
+      <StatusFilter value={status} onChange={onStatusChange} />
+      <ColorFilters value={colors} onChange={onColorChange} />
     </footer>
   )
 }
