@@ -66,9 +66,11 @@ export const todosLoaded = (todos) => {
 }
 
 // Thunk function
-export async function fetchTodos(dispatch, getState) {
-  const response = await client.get('/fakeApi/todos')
-  dispatch(todosLoaded(response.todos))
+export function fetchTodos() {
+  return async function fetchTodosThunk(dispatch, getState) {
+    const response = await client.get('/fakeApi/todos')
+    dispatch(todosLoaded(response.todos))
+  }
 }
 
 export function saveNewTodo(text) {
