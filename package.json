@@ -10,7 +10,8 @@
     "react-dom": "^19",
     "react-redux": "^9.3",
     "redux": "^5",
-    "redux-thunk": "^3"
+    "redux-thunk": "^3",
+    "reselect": "^5"
   },
   "scripts": {
     "dev": "vite",
