@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect'
 import { client } from '../../api/client'
+import { StatusFilters } from '../filters/filtersSlice'
 
 const initialState = []
 
@@ -98,4 +99,28 @@ export const selectTodoIds = createSelector(
   // Then, an "output selector" that receives all the input results as arguments
   // and returns a final result value
   (todos) => todos.map((todo) => todo.id)
+)
+
+export const selectFilteredTodos = createSelector(
+  // First input selector: all todos
+  (state) => state.todos,
+  // Second input selector: current status filter
+  (state) => state.filters.status,
+  // Output selector: receives both values
+  (todos, status) => {
+    if (status === StatusFilters.All) {
+      return todos
+    }
+
+    const completedStatus = status === StatusFilters.Completed
+    // Return either active or completed todos based on filter
+    return todos.filter((todo) => todo.completed === completedStatus)
+  }
+)
+
+export const selectFilteredTodoIds = createSelector(
+  // Pass our other memoized selector as an input
+  selectFilteredTodos,
+  // And derive data in the output selector
+  (filteredTodos) => filteredTodos.map((todo) => todo.id)
 )
