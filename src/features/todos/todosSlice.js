@@ -1,3 +1,4 @@
+import { createSelector } from 'reselect'
 import { client } from '../../api/client'
 
 const initialState = []
@@ -90,3 +91,11 @@ export function saveNewTodo(text) {
     dispatch(todoAdded(response.todo))
   }
 }
+
+export const selectTodoIds = createSelector(
+  // First, pass one or more "input selector" functions:
+  (state) => state.todos,
+  // Then, an "output selector" that receives all the input results as arguments
+  // and returns a final result value
+  (todos) => todos.map((todo) => todo.id)
+)
