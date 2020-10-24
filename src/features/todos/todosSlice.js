@@ -104,17 +104,24 @@ export const selectTodoIds = createSelector(
 export const selectFilteredTodos = createSelector(
   // First input selector: all todos
   (state) => state.todos,
-  // Second input selector: current status filter
-  (state) => state.filters.status,
+  // Second input selector: all filter values
+  (state) => state.filters,
   // Output selector: receives both values
-  (todos, status) => {
-    if (status === StatusFilters.All) {
+  (todos, filters) => {
+    const { status, colors } = filters
+    const showAllCompletions = status === StatusFilters.All
+    if (showAllCompletions && colors.length === 0) {
       return todos
     }
 
     const completedStatus = status === StatusFilters.Completed
     // Return either active or completed todos based on filter
-    return todos.filter((todo) => todo.completed === completedStatus)
+    return todos.filter((todo) => {
+      const statusMatches =
+        showAllCompletions || todo.completed === completedStatus
+      const colorMatches = colors.length === 0 || colors.includes(todo.color)
+      return statusMatches && colorMatches
+    })
   }
 )
 
