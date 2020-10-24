@@ -3,7 +3,7 @@ import { setupServer } from 'msw/native'
 
 // Add an extra delay to all endpoints, so loading spinners show up.
 // Set this to 2000 to simulate a slow network.
-const ARTIFICIAL_DELAY_MS = 0
+const ARTIFICIAL_DELAY_MS = 2000
 
 // In-memory "database" of todo entries
 let todos = [
