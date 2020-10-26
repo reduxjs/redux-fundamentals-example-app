@@ -1,4 +1,4 @@
-import { createSelector } from 'reselect'
+import { createSelector } from '@reduxjs/toolkit'
 import { client } from '../../api/client'
 import { StatusFilters } from '../filters/filtersSlice'
 
