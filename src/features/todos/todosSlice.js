@@ -1,4 +1,4 @@
-import { createSlice, createSelector } from '@reduxjs/toolkit'
+import { createSlice, createSelector, createAsyncThunk } from '@reduxjs/toolkit'
 import { client } from '../../api/client'
 import { StatusFilters } from '../filters/filtersSlice'
 
@@ -7,14 +7,25 @@ const initialState = {
   entities: {},
 }
 
+// Thunk functions
+export const fetchTodos = createAsyncThunk('todos/fetchTodos', async () => {
+  const response = await client.get('/fakeApi/todos')
+  return response.todos
+})
+
+export const saveNewTodo = createAsyncThunk(
+  'todos/saveNewTodo',
+  async (text) => {
+    const initialTodo = { text }
+    const response = await client.post('/fakeApi/todos', { todo: initialTodo })
+    return response.todo
+  }
+)
+
 const todosSlice = createSlice({
   name: 'todos',
   initialState,
   reducers: {
-    todoAdded(state, action) {
-      const todo = action.payload
-      state.entities[todo.id] = todo
-    },
     todoToggled(state, action) {
       const todoId = action.payload
       const todo = state.entities[todoId]
@@ -46,17 +57,24 @@ const todosSlice = createSlice({
         }
       })
     },
-    todosLoading(state, action) {
-      state.status = 'loading'
-    },
-    todosLoaded(state, action) {
-      const newEntities = {}
-      action.payload.forEach((todo) => {
-        newEntities[todo.id] = todo
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchTodos.pending, (state, action) => {
+        state.status = 'loading'
       })
-      state.entities = newEntities
-      state.status = 'idle'
-    },
+      .addCase(fetchTodos.fulfilled, (state, action) => {
+        const newEntities = {}
+        action.payload.forEach((todo) => {
+          newEntities[todo.id] = todo
+        })
+        state.entities = newEntities
+        state.status = 'idle'
+      })
+      .addCase(saveNewTodo.fulfilled, (state, action) => {
+        const todo = action.payload
+        state.entities[todo.id] = todo
+      })
   },
 })
 
@@ -67,26 +85,9 @@ export const {
   todoColorSelected,
   todoDeleted,
   todoToggled,
-  todosLoaded,
-  todosLoading,
 } = todosSlice.actions
 
 export default todosSlice.reducer
-
-// Thunk function
-export const fetchTodos = () => async (dispatch) => {
-  dispatch(todosLoading())
-  const response = await client.get('/fakeApi/todos')
-  dispatch(todosLoaded(response.todos))
-}
-
-export function saveNewTodo(text) {
-  return async function saveNewTodoThunk(dispatch, getState) {
-    const initialTodo = { text }
-    const response = await client.post('/fakeApi/todos', { todo: initialTodo })
-    dispatch(todoAdded(response.todo))
-  }
-}
 
 const selectTodoEntities = (state) => state.todos.entities
 
