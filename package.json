@@ -3,16 +3,12 @@
   "version": "2.0.0",
   "private": true,
   "dependencies": {
-    "@redux-devtools/extension": "^4",
     "@reduxjs/toolkit": "^2.12",
     "classnames": "^2.5",
     "msw": "^2.15",
     "react": "^19",
     "react-dom": "^19",
-    "react-redux": "^9.3",
-    "redux": "^5",
-    "redux-thunk": "^3",
-    "reselect": "^5"
+    "react-redux": "^9.3"
   },
   "scripts": {
     "dev": "vite",
