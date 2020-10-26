@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@redux-devtools/extension": "^4",
+    "@reduxjs/toolkit": "^2.12",
     "classnames": "^2.5",
     "msw": "^2.15",
     "react": "^19",
