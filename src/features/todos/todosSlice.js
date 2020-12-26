@@ -4,6 +4,7 @@ import {
   createAsyncThunk,
   createEntityAdapter,
 } from '@reduxjs/toolkit'
+import memoize, { getUntrackedObject } from 'proxy-memoize'
 import { client } from '../../api/client'
 import { StatusFilters } from '../filters/filtersSlice'
 
@@ -98,6 +99,7 @@ export const selectTodoIds = createSelector(
   (todos) => todos.map((todo) => todo.id)
 )
 
+/*
 export const selectFilteredTodos = createSelector(
   // First input selector: all todos
   selectTodos,
@@ -121,10 +123,37 @@ export const selectFilteredTodos = createSelector(
     })
   }
 )
+*/
 
+export const selectFilteredTodos = memoize((state) => {
+  console.log('Original state: ', getUntrackedObject(state))
+  const { status, colors } = state.filters
+
+  const todos = selectTodos(state)
+
+  const showAllCompletions = status === StatusFilters.All
+  if (showAllCompletions && colors.length === 0) {
+    return todos
+  }
+
+  const completedStatus = status === StatusFilters.Completed
+  // Return either active or completed todos based on filter
+  return todos.filter((todo) => {
+    const statusMatches =
+      showAllCompletions || todo.completed === completedStatus
+    const colorMatches = colors.length === 0 || colors.includes(todo.color)
+    return statusMatches && colorMatches
+  })
+})
+
+/*
 export const selectFilteredTodoIds = createSelector(
   // Pass our other memoized selector as an input
   selectFilteredTodos,
   // And derive data in the output selector
   (filteredTodos) => filteredTodos.map((todo) => todo.id)
 )
+*/
+export const selectFilteredTodoIds = memoize((state) => {
+  return selectFilteredTodos(state).map((todo) => todo.id)
+})
