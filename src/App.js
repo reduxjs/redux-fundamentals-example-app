@@ -1,15 +1,15 @@
-import React from 'react'
+import React from "react";
 
-import Header from './features/header/Header'
-import TodoList from './features/todos/TodoList'
-import Footer from './features/footer/Footer'
+import Header from "./features/header/Header";
+import TodoList from "./features/todos/TodoList";
+import Footer from "./features/footer/Footer";
 
 function App() {
   return (
     <div className="App">
       <nav>
         <section>
-          <h1>Redux Fundamentals Example</h1>
+          <h1>Redux Fundamentals Examplerrrr</h1>
         </section>
       </nav>
       <main>
@@ -23,7 +23,7 @@ function App() {
         </section>
       </main>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
