@@ -1,5 +1,5 @@
-import React from 'react'
-
+import React from "react";
+//  redux
 function App() {
   return (
     <div className="App">
@@ -16,7 +16,7 @@ function App() {
         <h2>Welcome to the Redux Fundamentals example app!</h2>
       </section>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
