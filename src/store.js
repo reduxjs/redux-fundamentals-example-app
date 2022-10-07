@@ -1,4 +1,5 @@
 import { createStore, applyMiddleware } from 'redux'
+import thunkMiddleware from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import rootReducer from './reducer'
 
@@ -11,7 +12,7 @@ if (persistedTodosString) {
   }
 }
 
-const composedEnhancer = composeWithDevTools(applyMiddleware())
+const composedEnhancer = composeWithDevTools(applyMiddleware(thunkMiddleware))
 
 const store = createStore(rootReducer, preloadedState, composedEnhancer)
 
