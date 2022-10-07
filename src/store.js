@@ -11,7 +11,7 @@ if (persistedTodosString) {
   }
 }
 
-const composedEnhancer = composeWithDevTools()
+const composedEnhancer = composeWithDevTools(applyMiddleware())
 
 const store = createStore(rootReducer, preloadedState, composedEnhancer)
 
