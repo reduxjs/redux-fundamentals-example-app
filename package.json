@@ -12,6 +12,8 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.3",
+    "redux": "^4.2.0",
+    "redux-devtools-extension": "^2.13.9",
     "seedrandom": "^3.0.5"
   },
   "scripts": {
