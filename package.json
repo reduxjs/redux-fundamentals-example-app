@@ -16,6 +16,7 @@
     "redux": "^4.2.0",
     "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.4.1",
+    "reselect": "^4.1.6",
     "seedrandom": "^3.0.5"
   },
   "scripts": {

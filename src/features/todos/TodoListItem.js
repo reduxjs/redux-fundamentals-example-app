@@ -1,12 +1,10 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
+import { selectTodoById } from './todosSlice'
 import { ReactComponent as TimesSolid } from './times-solid.svg'
 
 import { availableColors, capitalize } from '../filters/colors'
-
-const selectTodoById = (state, todoId) =>
-  state.todos.find((todo) => todo.id === todoId)
 
 const TodoListItem = ({ todoId }) => {
   const todo = useSelector((state) => selectTodoById(state, todoId))
@@ -21,7 +19,7 @@ const TodoListItem = ({ todoId }) => {
   const onColorChange = (value) => {
     dispatch({
       type: 'todos/colorSelected',
-      payload: { color: value, todoId: todo.Id },
+      payload: { color: value, todoId },
     })
   }
 
@@ -45,8 +43,6 @@ const TodoListItem = ({ todoId }) => {
       {capitalize(c)}
     </option>
   ))
-
-  console.log('rendering TodoListItem #', todo.id)
 
   return (
     <li>
