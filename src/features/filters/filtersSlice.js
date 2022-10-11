@@ -9,7 +9,7 @@ const initialState = {
   colors: [],
 }
 
-export default function filtersReducer(state = initialState, action) {
+const filtersReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'filters/statusFilterChanged': {
       return {
@@ -53,16 +53,14 @@ export default function filtersReducer(state = initialState, action) {
 
 // Action creators
 
-export const colorFilterChanged = (color, changeType) => {
-  return {
-    type: 'filters/colorFilterChanged',
-    payload: { color, changeType },
-  }
-}
+export const colorFilterChanged = (color, changeType) => ({
+  type: 'filters/colorFilterChanged',
+  payload: { color, changeType },
+})
 
-export const statusFilterChanged = (status) => {
-  return {
-    type: 'filters/statusFilterChanged',
-    payload: status
-  }
-}
+export const statusFilterChanged = (status) => ({
+  type: 'filters/statusFilterChanged',
+  payload: status,
+})
+
+export default filtersReducer

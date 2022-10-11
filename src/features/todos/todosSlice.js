@@ -114,6 +114,29 @@ export const todoAdded = (todo) => ({
   payload: todo,
 })
 
+export const toggleTodo = (todoId) => ({
+  type: 'todos/todoToggled',
+  payload: todoId,
+})
+
+export const selectColor = (color, todoId) => ({
+  type: 'todos/colorSelected',
+  payload: { color, todoId },
+})
+
+export const deleteTodo = (todoId) => ({
+  type: 'todos/todoDeleted',
+  payload: todoId,
+})
+
+export const todosAllCompleted = () => ({
+  type: 'todos/allCompleted',
+})
+
+export const todosClearCompleted = () => ({
+  type: 'todos/completedCleared',
+})
+
 export const todosLoading = () => ({
   type: 'todos/todosLoading',
 })
