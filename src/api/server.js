@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
 
 import { Server, Model, Factory, hasMany, RestSerializer } from 'miragejs'
+import {faker} from "@faker-js/faker";
 
-import faker from 'faker'
 import seedrandom from 'seedrandom'
 
 const IdSerializer = RestSerializer.extend({
