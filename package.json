@@ -3,16 +3,26 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
-    "classnames": "^2.2.6",
-    "faker": "^4.1.0",
-    "miragejs": "^0.1.35",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-scripts": "3.4.3",
-    "seedrandom": "^3.0.5"
+    "@mswjs/data": "^0.12.0",
+    "@reduxjs/toolkit": "^1.9.5",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^14.0.0",
+    "@testing-library/user-event": "^14.4.3",
+    "classnames": "^2.3.2",
+    "date-fns": "^2.29.3",
+    "faker": "^6.6.6",
+    "miragejs": "^0.1.47",
+    "mock-socket": "^9.2.1",
+    "msw": "^1.2.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-redux": "^8.0.5",
+    "react-router-dom": "^6.10.0",
+    "react-scripts": "5.0.1",
+    "redux": "^4.2.1",
+    "seedrandom": "^3.0.5",
+    "textgen": "^0.0.0",
+    "web-vitals": "^3.3.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -36,6 +46,6 @@
     ]
   },
   "devDependencies": {
-    "prettier": "^2.0.2"
+    "@faker-js/faker": "^7.6.0"
   }
 }
