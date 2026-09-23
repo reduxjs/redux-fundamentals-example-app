@@ -230,9 +230,7 @@ main h2 {
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.1);
 }
 
-.todoapp input::input-placeholder,
-.todoapp input::-webkit-input-placeholder,
-.todoapp input::-moz-placeholder {
+.todoapp input::placeholder {
   font-style: italic;
   font-weight: 300;
   color: rgba(0, 0, 0, 0.4);

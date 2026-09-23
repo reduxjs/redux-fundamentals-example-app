@@ -1,126 +1,85 @@
-/* eslint-disable no-unused-vars */
+import { http, HttpResponse, delay } from 'msw'
+import { setupServer } from 'msw/native'
 
-import { Server, Model, Factory, hasMany, RestSerializer } from 'miragejs'
+// Add an extra delay to all endpoints, so loading spinners show up.
+// Set this to 2000 to simulate a slow network.
+const ARTIFICIAL_DELAY_MS = 0
 
-import faker from 'faker'
-import seedrandom from 'seedrandom'
-
-const IdSerializer = RestSerializer.extend({
-  serializeIds: 'always',
-})
-
-// Set up a seeded random number generator, so that we get
-// a consistent set of users / entries each time the page loads.
-// This can be reset by deleting this localStorage value,
-// or turned off by setting `useSeededRNG` to false.
-let useSeededRNG = false
-
-let rng = seedrandom()
-
-if (useSeededRNG) {
-  let randomSeedString = localStorage.getItem('randomTimestampSeed')
-  let seedDate
-
-  if (randomSeedString) {
-    seedDate = new Date(randomSeedString)
-  } else {
-    seedDate = new Date()
-    randomSeedString = seedDate.toISOString()
-    localStorage.setItem('randomTimestampSeed', randomSeedString)
-  }
-
-  rng = seedrandom(randomSeedString)
-  faker.seed(seedDate.getTime())
-}
-
-function getRandomInt(min, max) {
-  min = Math.ceil(min)
-  max = Math.floor(max)
-  return Math.floor(rng() * (max - min + 1)) + min
-}
-
-const randomFromArray = (array) => {
-  const index = getRandomInt(0, array.length - 1)
-  return array[index]
-}
-
-const todoTemplates = [
-  { base: 'Buy $THING', values: ['milk', 'bread', 'cheese', 'toys'] },
-  { base: 'Clean $THING', values: ['house', 'yard', 'bedroom', 'car'] },
-  { base: 'Read $THING', values: ['newspaper', 'book', 'email'] },
+// In-memory "database" of todo entries
+let todos = [
+  { id: 0, text: 'Buy milk', completed: false, color: '' },
+  { id: 1, text: 'Clean house', completed: false, color: '' },
+  { id: 2, text: 'Read newspaper', completed: false, color: '' },
+  { id: 3, text: 'Buy toys', completed: false, color: '' },
+  { id: 4, text: 'Clean car', completed: false, color: '' },
 ]
 
-const generateTodoText = () => {
-  const template = randomFromArray(todoTemplates)
-  const value = randomFromArray(template.values)
-  const text = template.base.replace('$THING', value)
-  return text
-}
+let nextId = todos.length
 
-new Server({
-  routes() {
-    this.namespace = 'fakeApi'
-    //this.timing = 2000
+const findTodo = (id) => todos.find((todo) => todo.id === Number(id))
 
-    this.resource('todos')
-    this.resource('lists')
+export const handlers = [
+  http.get('/fakeApi/todos', async () => {
+    await delay(ARTIFICIAL_DELAY_MS)
+    return HttpResponse.json({ todos })
+  }),
 
-    const server = this
+  http.get('/fakeApi/todos/:todoId', async ({ params }) => {
+    await delay(ARTIFICIAL_DELAY_MS)
+    const todo = findTodo(params.todoId)
+    if (!todo) {
+      return new HttpResponse(null, { status: 404 })
+    }
+    return HttpResponse.json({ todo })
+  }),
 
-    this.post('/todos', function (schema, req) {
-      const data = this.normalizedRequestAttrs()
+  http.post('/fakeApi/todos', async ({ request }) => {
+    await delay(ARTIFICIAL_DELAY_MS)
+    const data = await request.json()
 
-      if (data.text === 'error') {
-        throw new Error('Could not save the todo!')
-      }
+    if (data.todo.text === 'error') {
+      return HttpResponse.json(
+        { message: 'Could not save the todo!' },
+        { status: 500 }
+      )
+    }
 
-      const result = server.create('todo', data)
-      return result
-    })
-  },
-  models: {
-    todo: Model.extend({}),
-    list: Model.extend({
-      todos: hasMany(),
-    }),
-  },
-  factories: {
-    todo: Factory.extend({
-      id(i) {
-        return Number(i)
-      },
-      text() {
-        return generateTodoText()
-      },
-      completed() {
-        return false
-      },
-      color() {
-        return ''
-      },
-    }),
-  },
-  serializers: {
-    todo: IdSerializer.extend({
-      serialize(object, request) {
-        // HACK Mirage keeps wanting to store integer IDs as strings. Always convert them to numbers for now.
-        const numerifyId = (todo) => {
-          todo.id = Number(todo.id)
-        }
-        let json = IdSerializer.prototype.serialize.apply(this, arguments)
+    const todo = {
+      id: nextId++,
+      text: data.todo.text,
+      completed: false,
+      color: '',
+      ...data.todo,
+    }
+    todos.push(todo)
+    return HttpResponse.json({ todo })
+  }),
 
-        if (json.todo) {
-          numerifyId(json.todo)
-        } else if (json.todos) {
-          json.todos.forEach(numerifyId)
-        }
+  http.put('/fakeApi/todos/:todoId', async ({ request, params }) => {
+    await delay(ARTIFICIAL_DELAY_MS)
+    const todo = findTodo(params.todoId)
+    if (!todo) {
+      return new HttpResponse(null, { status: 404 })
+    }
+    const data = await request.json()
+    Object.assign(todo, data.todo, { id: todo.id })
+    return HttpResponse.json({ todo })
+  }),
 
-        return json
-      },
-    }),
-    list: IdSerializer,
-  },
-  seeds(server) {
-    server.createList('todo', 5)
-  },
-})
+  http.delete('/fakeApi/todos/:todoId', async ({ params }) => {
+    await delay(ARTIFICIAL_DELAY_MS)
+    const todo = findTodo(params.todoId)
+    if (!todo) {
+      return new HttpResponse(null, { status: 404 })
+    }
+    todos = todos.filter((t) => t !== todo)
+    return HttpResponse.json({ todo })
+  }),
+]
+
+// This uses the `msw/native` entry point, which intercepts `fetch` calls
+// directly in the page rather than registering a browser service worker.
+// That allows the fake API to run inside browser sandboxes like StackBlitz.
+export const server = setupServer(...handlers)
+
+server.listen({ onUnhandledRequest: 'bypass' })
